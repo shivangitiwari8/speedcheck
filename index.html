@@ -1,71 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>
-        To detect network speed using JavaScript
-    </title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Speed Detection</title>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-            body{
-                background-color: black;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-            }
+        body {
+            background-color: #1d1d1d;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 18px;
+            text-align: center;
+        }
 
+        #container {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        button {
+            background-color: #00b894;
+            border: none;
+            padding: 12px 30px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #00cec9;
+            transform: scale(1.1);
+        }
+
+        button:active {
+            background-color: #00b894;
+            transform: scale(1);
+        }
+
+        /* Add smooth transition for the text display */
+        .speed-display {
+            font-size: 1.2rem;
+            color: #f1f1f1;
+            margin-top: 20px;
+            padding: 30px;
+            background-color: #333;
+            border-radius: 10px;
+            display: inline-block;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .speed-display.show {
+            opacity: 1;
+        }
     </style>
 
 </head>
 
 <body>
 
-
-    <div id="container">Speed</div>
-    <button onclick="fun1()">Check Speed</button>
-
-
+    <div>
+        <div id="container">Check Your Network Speed</div>
+        <div id="speedDisplay" class="speed-display"></div><br><br><br><br><br>
+        <button onclick="checkSpeed()">Check Speed</button>
+    </div>
 
     <script type="text/javascript">
-        function fun1(){
+        function checkSpeed() {
+            let userImageLink = "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20200714180638/CIP_Launch-banner.png";
+            let time_start, end_time;
+            let downloadSize = 5616998; // in bytes
+            let downloadImgSrc = new Image();
 
-        let userImageLink =
-"https://media.geeksforgeeks.org/wp-content/cdn-uploads/20200714180638/CIP_Launch-banner.png";
-        let time_start, end_time;
+            // Adding cache-busting query parameter
+            let uniqueLink = userImageLink + "?t=" + new Date().getTime();
+            downloadImgSrc.src = uniqueLink;
 
-        // The size in bytes
-        let downloadSize = 5616998;
-        let downloadImgSrc = new Image();
+            downloadImgSrc.onload = function () {
+                end_time = new Date().getTime();
+                displaySpeed();
+            };
 
-        downloadImgSrc.onload = function () {
-            end_time = new Date().getTime();
-            displaySpeed();
-        };
-        time_start = new Date().getTime();
-        downloadImgSrc.src = userImageLink;
+            time_start = new Date().getTime();
 
+            function displaySpeed() {
+                let timeDuration = (end_time - time_start) / 1000;
+                let loadedBits = downloadSize * 8;
 
-        function displaySpeed() {
-            let timeDuration = (end_time - time_start) / 1000;
-            let loadedBits = downloadSize * 8;
+                let bps = (loadedBits / timeDuration).toFixed(2);
+                let speedInKbps = (bps / 1024).toFixed(2);
+                let speedInMbps = (speedInKbps / 1024).toFixed(2);
 
-            /* Converts a number into string
-               using toFixed(2) rounding to 2 */
-            let bps = (loadedBits / timeDuration).toFixed(2);
-            let speedInKbps = (bps / 1024).toFixed(2);
-            let speedInMbps = (speedInKbps / 1024).toFixed(2);
-            // alert("Your internet connection speed is: \n"
-            //     + bps + " bps\n" + speedInKbps
-            //     + " kbps\n" + speedInMbps + " Mbps\n");
-            let c = document.getElementById("container")
-            c.innerHTML = ("Your internet connection speed is: \n"+ bps + " bps\n" + speedInKbps+ " kbps\n" + speedInMbps + " Mbps\n");
-    }
-}
-
+                let displayElement = document.getElementById("speedDisplay");
+                displayElement.classList.add("show");
+                displayElement.innerHTML = `Your internet connection speed is: <br> <br>
+                                            ${bps} bps <br> <br>
+                                            ${speedInKbps} kbps <br> <br>
+                                            ${speedInMbps} Mbps`;
+            }
+        }
     </script>
+
 </body>
 
 </html>
