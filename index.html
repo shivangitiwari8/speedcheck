@@ -32,6 +32,7 @@
             font-weight: 300;
         }
 
+
         button {
             background-color: #00b894;
             border: none;
@@ -75,7 +76,7 @@
 
 <body>
 
-    <div>
+    <div id="main">
         <div id="container">Check Your Network Speed</div>
         <div id="speedDisplay" class="speed-display"></div><br><br><br><br><br>
         <button onclick="checkSpeed()">Check Speed</button>
@@ -110,8 +111,8 @@
                 let displayElement = document.getElementById("speedDisplay");
                 displayElement.classList.add("show");
                 displayElement.innerHTML = `Your internet connection speed is: <br> <br>
-                                            ${bps} bps <br> <br>
-                                            ${speedInKbps} kbps <br> <br>
+                                            ${bps} Bytes perSecond <br> <br>
+                                            ${speedInKbps} kilobytes perSecond <br> <br>
                                             ${speedInMbps} Mbps`;
             }
         }
